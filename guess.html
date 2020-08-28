@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number</title>
+    <style>
+        body{
+           background-color:pink ; 
+        }
+        .replay{
+            padding: 5px;
+            
+        }
+
+        button {
+            display: block;
+            padding: 10px;
+            min-width: 100px;
+            font-size: 1.4em;
+            font-family: sans-serif;
+            border-radius:  15px;
+            margin-top: 5px;
+            margin-left: 32em;
+           
+
+        }
+
+        input{
+            font-size:  1.5em;
+            margin-top: 4px;
+            padding: 1px;
+        }
+
+        .message{
+            margin: 10px 0;
+            font-size: 1.2rem;
+        }
+
+        .output{
+            margin-top: 20rem;
+            line-height: 20px;
+  height: 200px;
+  text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="output">
+        <div class="message"></div>
+            <input type="number">
+            <button>Guess</button>
+        
+    </div>
+    <script>
+        let game = {
+            "min": 1,
+            "max": 10
+        };
+        document.addEventListener("DOMContentLoaded", function () {
+        game.output = document.querySelector(".output");
+        game.message = document.querySelector(".message");
+        game.guessInput = document.querySelector("input");
+        game.btn = document.querySelector("button");
+        game.btn.addEventListener("click",guessValue);
+        init();
+    })
+
+    function guessValue(){
+        if(game.btn.classList.contains("replay")){
+            init();
+            game.btn.innerHTML = "Guess";
+            game.guessInput.style.display = "block";
+            game.btn.classList.remove("replay");
+        }
+
+        else{
+            game.guesses++;
+        let tempGuess = game.guessInput.value;
+        game.guessInput.value = "";
+        tempGuess = parseInt(tempGuess);
+        if (isNaN(tempGuess)) {
+            message(`please enter only Digits`, "red");
+        }
+        else if (tempGuess === game.num) {
+            message (`your guess is correct ${game.num} in ${game.guesses} guesses`, "green");
+            gameOver();
+
+        }
+        else {
+            let holder = tempGuess > game.num ? { "c": "blue","m":"Was Lower"}: { "c":"purple","m":"Was Higher"} ;
+            message (holder.m,holder.c);
+            
+        }
+    }
+    }
+
+    function init(){
+        game.guesses = 0;
+        game.num = RanNum(game.min,game.max);
+        let tempMes = `Welcome to the Game.Guess the number from ${game.min}  to ${game.max}`;
+        message(tempMes,"blue");
+       
+
+    }
+    function gameOver(){
+        game.btn.innerHTML = "Restart game";
+        game.guessInput.style.display = "none";
+        game.btn.classList.add("replay");
+        game.max += 5;
+    }
+
+    function RanNum(min,max){
+        return Math.floor(Math.random()*(max - min + 1)+min);
+    }
+
+    function message(mes,clr) {
+        game.message.innerHTML = mes;
+        game.message.style.color = clr || "black";
+        game.guessInput.style.borderColor = clr || "black";
+        game.btn.style.backgroundColor =  clr || "black";
+        game.btn.style.color = "white";
+
+    }
+
+    </script>
+    
+</body>
+</html>
